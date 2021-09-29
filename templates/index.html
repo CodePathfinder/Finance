@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Portfolio
+{% endblock %}
+
+{% block main %}
+
+<script type="text/javascript">
+
+    // Upon double click on symbol makes visible buy/sell form and authocomplete the form with the symbol and number of user's shares
+    function get_symbol(smbl, n) {
+        document.querySelector('#actionform').style.visibility = "visible";
+        document.querySelector('#symbol').setAttribute("value", smbl);
+        document.querySelector('#shares').setAttribute("value", n);
+    }
+    // Changes attribute action in the form depending on selected action (buy or sell)
+    function chAction(input) {
+        let actionform = document.querySelector('#actionform');
+        if (!actionform) return false;
+        actionform.action = '/' + input.value;
+    }
+
+</script>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>TOTAL</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+
+        <tr>
+
+            <td ondblclick="get_symbol('{{ row[0] }}', {{ row[2] }})">{{ row[0] }}</td>
+
+            {% for i in range(1,5) %}
+
+            <td>{{ row[i] }}</td>
+
+            {% endfor %}
+
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>CASH</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ cash }}</td>
+        </tr>
+
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ grand_total }}</td>
+        </tr>
+    </tfoot>
+</table>
+
+<form id="actionform" method="post" style="visibility: hidden">
+    <div class="form-group">
+        <input id="symbol" type="text" name="symbol" class="form-control" readonly>
+        <input id="shares" type="text" name="shares" class="form-control">
+        <select id="act" onchange="chAction(this)" class="form-control">
+            <option name="act" value="choose action" selected disabled>Choose action</option>
+            <option name="act" value="buy">BUY</option>
+            <option name="act" value="sell">SELL</option>
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit order</button>
+</form>
+
+{% endblock %}

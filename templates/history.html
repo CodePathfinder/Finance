@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Status
+{% endblock %}
+
+{% block main %}
+
+    <table class="table table-striped">
+
+            <tr>
+                <th>Symbol</th>
+                <th>Shares</th>
+                <th>Price</th>
+                <th>Transacted</th>
+            </tr>
+
+        {% for row in data %}
+
+            <tr>
+
+                <td>{{ row.symbol }}</td>
+                <td>{{ row.shares }}</td>
+                <td>{{ row.transaction_price }}</td>
+                <td>{{ row.transaction_time }}</td>
+
+            </tr>
+
+        {% endfor %}
+
+    </table>
+
+{% endblock %}
+
